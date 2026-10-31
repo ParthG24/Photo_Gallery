@@ -1,6 +1,6 @@
 import React from 'react';
 
-export default function ErrorMessage({ message, onRetry }) {
+export default function ErrorMessage({ message }) {
   return (
     <div className="max-w-md mx-auto my-14 p-6 bg-white border border-[#e2e7dc] rounded-2xl text-center shadow-xs">
       <div className="w-10 h-10 mx-auto flex items-center justify-center rounded-full bg-[#edf2e8] text-[#445e39] mb-3">
@@ -17,19 +17,9 @@ export default function ErrorMessage({ message, onRetry }) {
       <h3 className="text-sm font-medium text-[#1f291c] mb-1">
         Unable to load photos
       </h3>
-      <p className="text-xs text-[#64705c] mb-4">
+      <p className="text-xs text-[#64705c]">
         {message || 'Something went wrong while fetching photos.'}
       </p>
-
-      {onRetry && (
-        <button
-          type="button"
-          onClick={onRetry}
-          className="px-4 py-2 text-xs font-medium text-white bg-[#445e39] hover:bg-[#384e2e] rounded-lg transition-colors shadow-xs"
-        >
-          Try Again
-        </button>
-      )}
     </div>
   );
 }

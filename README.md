@@ -27,7 +27,7 @@ A clean, responsive photo gallery web app built with **React**, **Vite**, and **
 ├── public/
 ├── src/
 │   ├── components/
-│   │   ├── ErrorMessage.jsx      # Error banner with retry option
+│   │   ├── ErrorMessage.jsx      # Error banner when fetch fails
 │   │   ├── Gallery.jsx           # Main gallery container (hooks, search, grid)
 │   │   ├── LoadingSpinner.jsx    # Tailwind-only animated loading spinner
 │   │   ├── PhotoCard.jsx         # Card displaying photo, author, & heart toggle

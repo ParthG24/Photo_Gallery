@@ -7,7 +7,7 @@ import LoadingSpinner from './LoadingSpinner';
 import ErrorMessage from './ErrorMessage';
 
 export default function Gallery() {
-  const { photos, loading, error, refetch } = useFetchPhotos();
+  const { photos, loading, error } = useFetchPhotos();
 
   // manage favourites list and load any saved ones on first render
   const [favourites, dispatch] = useReducer(
@@ -27,7 +27,7 @@ export default function Gallery() {
     }
   }, [favourites]);
 
-  // with this useCallback function we make sure the child component doesn't re-render needlessly
+  // keep search handler reference stable for memoized SearchBar
   const handleSearchChange = useCallback((e) => {
     setSearchQuery(e.target.value);
   }, []);
@@ -37,7 +37,7 @@ export default function Gallery() {
     dispatch({ type: 'TOGGLE_FAVOURITE', payload: photoId });
   }, []);
 
-  // with this useMemo function we make sure we don't re-run the filter on every re-render
+  // memoize filtered list so favourite toggles don't trigger re-filter
   const filteredPhotos = useMemo(() => {
     const query = searchQuery.trim().toLowerCase();
     if (!query) return photos;
@@ -54,7 +54,7 @@ export default function Gallery() {
       {loading && <LoadingSpinner />}
 
       {!loading && error && (
-        <ErrorMessage message={error} onRetry={refetch} />
+        <ErrorMessage message={error} />
       )}
 
       {!loading && !error && (

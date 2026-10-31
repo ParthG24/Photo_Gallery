@@ -24,6 +24,7 @@ dist-ssr
 *.sw?
 
 # Interview explanation doc (DO NOT PUSH TO GITHUB)
+PRESENTATION_SCRIPT.md
 EXPLANATION.md
 CODE_EXPLANATION.md
 WALKTHROUGH.md
