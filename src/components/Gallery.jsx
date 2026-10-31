@@ -17,32 +17,33 @@ export default function Gallery() {
 
   const [searchQuery, setSearchQuery] = useState('');
 
-  // Side effect: keep localStorage in sync whenever favourites changes.
-  // This is the right place for it — not inside the reducer.
+  // Keep localStorage synchronized whenever favourites changes
   useEffect(() => {
     try {
       localStorage.setItem(STORAGE_KEY, JSON.stringify(favourites));
     } catch {
-      // localStorage might be blocked in some browsers (e.g. private mode)
+      // Handle blocked storage gracefully
     }
   }, [favourites]);
 
-  // useCallback keeps the function reference stable across re-renders.
-  // SearchBar is wrapped in React.memo, so it only re-renders when its props change.
-  // Without useCallback here, a new function reference would be passed on every render,
-  // making React.memo on SearchBar useless.
+  // useCallback stabilizes the function reference passed to SearchBar
   const handleSearchChange = useCallback((e) => {
     setSearchQuery(e.target.value);
   }, []);
 
+  // Dispatch toggle favourite action
   const handleToggleFavourite = useCallback((photoId) => {
     dispatch({ type: 'TOGGLE_FAVOURITE', payload: photoId });
   }, []);
 
+  // useMemo computes filtered list without re-running on unrelated renders
   const filteredPhotos = useMemo(() => {
     const query = searchQuery.trim().toLowerCase();
     if (!query) return photos;
-    return photos.filter((photo) => photo.author.toLowerCase().includes(query));
+
+    return photos.filter((photo) =>
+      photo.author.toLowerCase().includes(query)
+    );
   }, [photos, searchQuery]);
 
   return (
@@ -57,33 +58,39 @@ export default function Gallery() {
 
       {!loading && !error && (
         <>
-          <div className="flex items-center justify-between mb-8 pb-3 border-b border-neutral-800/80 text-xs text-neutral-400">
+          {/* Subtle minimal status bar */}
+          <div className="flex items-center justify-between mb-8 pb-3 border-b border-zinc-200/80 text-xs text-zinc-500">
             <p>
               Showing{' '}
-              <span className="text-white font-medium">{filteredPhotos.length}</span>{' '}
+              <span className="text-zinc-900 font-medium">
+                {filteredPhotos.length}
+              </span>{' '}
               of{' '}
-              <span className="text-white font-medium">{photos.length}</span>{' '}
+              <span className="text-zinc-900 font-medium">{photos.length}</span>{' '}
               photos
             </p>
             <p className="flex items-center gap-2">
-              <span className="w-1.5 h-1.5 rounded-full bg-red-500 inline-block" />
+              <span className="w-1.5 h-1.5 rounded-full bg-rose-500 inline-block" />
               <span>
-                <span className="text-white font-medium">{favourites.length}</span>{' '}
+                <span className="text-zinc-900 font-medium">
+                  {favourites.length}
+                </span>{' '}
                 favourites
               </span>
             </p>
           </div>
 
           {filteredPhotos.length === 0 ? (
-            <div className="text-center py-20 bg-neutral-900/40 border border-neutral-800/80 rounded-2xl p-8">
-              <p className="text-sm font-medium text-neutral-300 mb-1">
+            <div className="text-center py-20 bg-white border border-zinc-200/80 rounded-2xl p-8 shadow-xs">
+              <p className="text-sm font-medium text-zinc-800 mb-1">
                 No matching photos found
               </p>
-              <p className="text-xs text-neutral-500">
+              <p className="text-xs text-zinc-500">
                 No photographer matched &ldquo;{searchQuery}&rdquo;. Try another name.
               </p>
             </div>
           ) : (
+            /* Responsive Grid: Desktop 4, Tablet 2, Mobile 1 */
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
               {filteredPhotos.map((photo) => (
                 <PhotoCard
