@@ -1,51 +1,33 @@
 import React, { useState } from 'react';
 
-/**
- * PhotoCard component represents an individual card in the responsive gallery grid.
- * Displays the image, author name, and a heart button to toggle favourite status.
- *
- * @param {{
- *   photo: { id: string, author: string, download_url: string },
- *   isFavourite: boolean,
- *   onToggleFavourite: (id: string) => void
- * }} props
- */
 export default function PhotoCard({ photo, isFavourite, onToggleFavourite }) {
-  // Use Picsum 600x400 optimized thumbnail for fast grid rendering,
-  // falling back to photo.download_url if needed.
   const [imgSrc, setImgSrc] = useState(
     `https://picsum.photos/id/${photo.id}/600/400`
   );
 
   return (
-    <div className="group bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-shadow duration-300 border border-gray-100 flex flex-col">
-      {/* Image container */}
-      <div className="relative aspect-4/3 w-full bg-gray-100 overflow-hidden">
+    <div className="group bg-neutral-900/70 border border-neutral-800/80 rounded-2xl overflow-hidden hover:border-neutral-700 hover:shadow-xl hover:shadow-black/40 transition-all duration-300 flex flex-col">
+      <div className="relative aspect-4/3 w-full bg-neutral-950 overflow-hidden">
         <img
           src={imgSrc}
           alt={`Photo by ${photo.author}`}
           loading="lazy"
           onError={() => setImgSrc(photo.download_url)}
-          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 ease-out"
         />
 
-        {/* Floating Heart Icon Button */}
+        {/* Heart icon button to toggle favourites */}
         <button
           type="button"
           onClick={() => onToggleFavourite(photo.id)}
-          aria-label={
+          className={`absolute top-3 right-3 w-9 h-9 rounded-full flex items-center justify-center backdrop-blur-md border transition-all duration-200 ${
             isFavourite
-              ? `Remove ${photo.author}'s photo from favourites`
-              : `Add ${photo.author}'s photo to favourites`
-          }
-          className={`absolute top-3 right-3 p-2.5 rounded-full shadow-md backdrop-blur-md transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-rose-400 ${
-            isFavourite
-              ? 'bg-rose-50 text-rose-600 hover:bg-rose-100 scale-105'
-              : 'bg-white/80 text-gray-400 hover:text-rose-500 hover:bg-white'
+              ? 'bg-red-500/15 border-red-500/40 text-red-500 scale-105'
+              : 'bg-black/50 border-white/10 text-neutral-400 hover:text-white hover:bg-black/80 hover:scale-105'
           }`}
         >
           <svg
-            className="w-5 h-5 transition-transform active:scale-125"
+            className="w-4 h-4 transition-transform active:scale-125"
             viewBox="0 0 24 24"
             fill={isFavourite ? 'currentColor' : 'none'}
             stroke="currentColor"
@@ -58,24 +40,19 @@ export default function PhotoCard({ photo, isFavourite, onToggleFavourite }) {
         </button>
       </div>
 
-      {/* Card Info Footer */}
-      <div className="p-4 flex items-center justify-between">
+      <div className="p-4 flex items-center justify-between border-t border-neutral-800/60">
         <div className="min-w-0 pr-2">
-          <p className="text-xs uppercase tracking-wider text-gray-400 font-medium">
+          <p className="text-[10px] uppercase tracking-wider text-neutral-500 font-medium">
             Photographer
           </p>
-          <h3
-            className="text-sm font-semibold text-gray-800 truncate"
-            title={photo.author}
-          >
+          <h3 className="text-sm font-medium text-neutral-200 truncate group-hover:text-white transition-colors">
             {photo.author}
           </h3>
         </div>
 
-        {/* Small badge showing favourite status */}
         {isFavourite && (
-          <span className="shrink-0 text-xs font-medium px-2 py-0.5 rounded-full bg-rose-50 text-rose-600 border border-rose-100">
-            Favourited
+          <span className="shrink-0 text-[11px] font-medium px-2 py-0.5 rounded-full bg-red-500/10 text-red-400 border border-red-500/20">
+            Saved
           </span>
         )}
       </div>
