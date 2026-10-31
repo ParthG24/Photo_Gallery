@@ -2,8 +2,8 @@ import React from 'react';
 
 export default function ErrorMessage({ message, onRetry }) {
   return (
-    <div className="max-w-md mx-auto my-14 p-6 bg-white border border-rose-200/80 rounded-2xl text-center shadow-xs">
-      <div className="w-10 h-10 mx-auto flex items-center justify-center rounded-full bg-rose-50 text-rose-500 mb-3">
+    <div className="max-w-md mx-auto my-14 p-6 bg-white border border-[#e2e7dc] rounded-2xl text-center shadow-xs">
+      <div className="w-10 h-10 mx-auto flex items-center justify-center rounded-full bg-[#edf2e8] text-[#445e39] mb-3">
         <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path
             strokeLinecap="round"
@@ -14,10 +14,10 @@ export default function ErrorMessage({ message, onRetry }) {
         </svg>
       </div>
 
-      <h3 className="text-sm font-medium text-zinc-900 mb-1">
+      <h3 className="text-sm font-medium text-[#1f291c] mb-1">
         Unable to load photos
       </h3>
-      <p className="text-xs text-zinc-500 mb-4">
+      <p className="text-xs text-[#64705c] mb-4">
         {message || 'Something went wrong while fetching photos.'}
       </p>
 
@@ -25,7 +25,7 @@ export default function ErrorMessage({ message, onRetry }) {
         <button
           type="button"
           onClick={onRetry}
-          className="px-4 py-2 text-xs font-medium text-white bg-zinc-900 hover:bg-zinc-800 rounded-lg transition-colors shadow-xs"
+          className="px-4 py-2 text-xs font-medium text-white bg-[#445e39] hover:bg-[#384e2e] rounded-lg transition-colors shadow-xs"
         >
           Try Again
         </button>

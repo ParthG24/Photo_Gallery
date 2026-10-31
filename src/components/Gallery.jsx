@@ -60,20 +60,20 @@ export default function Gallery() {
       {!loading && !error && (
         <>
           {/* simple count bar at the top */}
-          <div className="flex items-center justify-between mb-8 pb-3 border-b border-zinc-200/80 text-xs text-zinc-500">
+          <div className="flex items-center justify-between mb-8 pb-3 border-b border-[#e2e7dc] text-xs text-[#64705c]">
             <p>
               Showing{' '}
-              <span className="text-zinc-900 font-medium">
+              <span className="text-[#1f291c] font-medium">
                 {filteredPhotos.length}
               </span>{' '}
               of{' '}
-              <span className="text-zinc-900 font-medium">{photos.length}</span>{' '}
+              <span className="text-[#1f291c] font-medium">{photos.length}</span>{' '}
               photos
             </p>
             <p className="flex items-center gap-2">
-              <span className="w-1.5 h-1.5 rounded-full bg-rose-500 inline-block" />
+              <span className="w-1.5 h-1.5 rounded-full bg-[#445e39] inline-block" />
               <span>
-                <span className="text-zinc-900 font-medium">
+                <span className="text-[#1f291c] font-medium">
                   {favourites.length}
                 </span>{' '}
                 favourites
@@ -82,11 +82,11 @@ export default function Gallery() {
           </div>
 
           {filteredPhotos.length === 0 ? (
-            <div className="text-center py-20 bg-white border border-zinc-200/80 rounded-2xl p-8 shadow-xs">
-              <p className="text-sm font-medium text-zinc-800 mb-1">
+            <div className="text-center py-20 bg-white border border-[#e2e7dc] rounded-2xl p-8 shadow-xs">
+              <p className="text-sm font-medium text-[#1f291c] mb-1">
                 No matching photos found
               </p>
-              <p className="text-xs text-zinc-500">
+              <p className="text-xs text-[#788570]">
                 No photographer matched &ldquo;{searchQuery}&rdquo;. Try another name.
               </p>
             </div>

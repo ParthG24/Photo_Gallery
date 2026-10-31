@@ -3,8 +3,8 @@ import React, { memo } from 'react';
 // with this function we make sure the component doesn't re-render unless its props change
 const PhotoCard = memo(function PhotoCard({ photo, isFavourite, onToggleFavourite }) {
   return (
-    <div className="group bg-white border border-zinc-200/80 rounded-2xl overflow-hidden shadow-xs hover:shadow-md hover:border-zinc-300 transition-all duration-300 flex flex-col">
-      <div className="relative aspect-4/3 w-full bg-zinc-100 overflow-hidden">
+    <div className="group bg-white border border-[#e2e7dc] rounded-2xl overflow-hidden shadow-xs hover:shadow-md hover:border-[#bcc7b3] transition-all duration-300 flex flex-col">
+      <div className="relative aspect-4/3 w-full bg-[#edf1e8] overflow-hidden">
         {/* photo thumbnail with lazy loading */}
         <img
           src={`https://picsum.photos/id/${photo.id}/600/400`}
@@ -19,8 +19,8 @@ const PhotoCard = memo(function PhotoCard({ photo, isFavourite, onToggleFavourit
           onClick={() => onToggleFavourite(photo.id)}
           className={`absolute top-3 right-3 w-9 h-9 rounded-full flex items-center justify-center backdrop-blur-md border transition-all duration-200 ${
             isFavourite
-              ? 'bg-white/95 border-rose-200 text-rose-500 shadow-sm scale-105'
-              : 'bg-white/85 border-white/60 text-zinc-400 hover:text-zinc-800 hover:bg-white hover:scale-105 shadow-xs'
+              ? 'bg-[#eef3ea] border-[#c4d1bc] text-[#3e5633] shadow-xs scale-105'
+              : 'bg-white/90 border-[#e2e7dc] text-[#8a9682] hover:text-[#3e5633] hover:bg-white hover:scale-105 shadow-xs'
           }`}
         >
           <svg
@@ -37,18 +37,18 @@ const PhotoCard = memo(function PhotoCard({ photo, isFavourite, onToggleFavourit
         </button>
       </div>
 
-      <div className="p-4 flex items-center justify-between border-t border-zinc-100">
+      <div className="p-4 flex items-center justify-between border-t border-[#edf1e8]">
         <div className="min-w-0 pr-2">
-          <p className="text-[10px] uppercase tracking-wider text-zinc-400 font-medium">
+          <p className="text-[10px] uppercase tracking-wider text-[#788570] font-medium">
             Photographer
           </p>
-          <h3 className="text-sm font-medium text-zinc-800 truncate group-hover:text-zinc-950 transition-colors">
+          <h3 className="text-sm font-medium text-[#1f291c] truncate group-hover:text-[#3e5633] transition-colors">
             {photo.author}
           </h3>
         </div>
 
         {isFavourite && (
-          <span className="shrink-0 text-[11px] font-medium px-2.5 py-0.5 rounded-full bg-rose-50 text-rose-600 border border-rose-100">
+          <span className="shrink-0 text-[11px] font-medium px-2.5 py-0.5 rounded-full bg-[#eef3ea] text-[#3e5633] border border-[#d3decb]">
             Saved
           </span>
         )}
