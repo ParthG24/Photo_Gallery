@@ -9,6 +9,7 @@ import ErrorMessage from './ErrorMessage';
 export default function Gallery() {
   const { photos, loading, error, refetch } = useFetchPhotos();
 
+  // manage favourites list and load any saved ones on first render
   const [favourites, dispatch] = useReducer(
     favouritesReducer,
     [],
@@ -17,26 +18,26 @@ export default function Gallery() {
 
   const [searchQuery, setSearchQuery] = useState('');
 
-  // Keep localStorage synchronized whenever favourites changes
+  // sync to localStorage whenever favourites state updates
   useEffect(() => {
     try {
       localStorage.setItem(STORAGE_KEY, JSON.stringify(favourites));
     } catch {
-      // Handle blocked storage gracefully
+      // ignore if storage is blocked (e.g. private browsing)
     }
   }, [favourites]);
 
-  // useCallback stabilizes the function reference passed to SearchBar
+  // stable function reference so SearchBar doesn't re-render needlessly
   const handleSearchChange = useCallback((e) => {
     setSearchQuery(e.target.value);
   }, []);
 
-  // Dispatch toggle favourite action
+  // dispatch the toggle action when someone clicks a heart
   const handleToggleFavourite = useCallback((photoId) => {
     dispatch({ type: 'TOGGLE_FAVOURITE', payload: photoId });
   }, []);
 
-  // useMemo computes filtered list without re-running on unrelated renders
+  // only re-filter when photos or the search query actually changes
   const filteredPhotos = useMemo(() => {
     const query = searchQuery.trim().toLowerCase();
     if (!query) return photos;
@@ -58,7 +59,7 @@ export default function Gallery() {
 
       {!loading && !error && (
         <>
-          {/* Subtle minimal status bar */}
+          {/* simple count bar at the top */}
           <div className="flex items-center justify-between mb-8 pb-3 border-b border-zinc-200/80 text-xs text-zinc-500">
             <p>
               Showing{' '}
@@ -90,7 +91,7 @@ export default function Gallery() {
               </p>
             </div>
           ) : (
-            /* Responsive Grid: Desktop 4, Tablet 2, Mobile 1 */
+            /* responsive grid: 4 cols desktop, 2 cols tablet, 1 col mobile */
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
               {filteredPhotos.map((photo) => (
                 <PhotoCard

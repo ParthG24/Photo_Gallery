@@ -4,7 +4,7 @@ import Gallery from './components/Gallery';
 export default function App() {
   return (
     <div className="min-h-screen bg-[#fafafa] text-zinc-900 flex flex-col font-sans selection:bg-zinc-200 selection:text-zinc-900">
-      {/* Clean Minimalist Header */}
+      {/* clean top header */}
       <header className="border-b border-zinc-200/80 sticky top-0 z-20 backdrop-blur-md bg-white/80">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-5">
           <div className="flex items-center justify-between">
@@ -25,7 +25,7 @@ export default function App() {
         </div>
       </header>
 
-      {/* Main Content Area */}
+      {/* main content area */}
       <main className="flex-1 max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 py-8 sm:py-10">
         <Gallery />
       </main>

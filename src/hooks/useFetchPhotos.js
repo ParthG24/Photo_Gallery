@@ -7,7 +7,7 @@ export function useFetchPhotos() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  // Fetch photos from the API
+  // pull photos from the API
   const fetchPhotos = useCallback(async () => {
     setLoading(true);
     setError(null);
@@ -24,10 +24,11 @@ export function useFetchPhotos() {
     }
   }, []);
 
-  // Fetch once when the component mounts
+  // run once as soon as the page opens
   useEffect(() => {
     fetchPhotos();
   }, [fetchPhotos]);
 
+  // also return refetch so the retry button can call it
   return { photos, loading, error, refetch: fetchPhotos };
 }

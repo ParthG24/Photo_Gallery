@@ -1,5 +1,6 @@
 import React, { memo } from 'react';
 
+// memo ensures typing elsewhere doesn't cause this to re-render
 const SearchBar = memo(function SearchBar({ value, onChange }) {
   return (
     <div className="w-full max-w-lg mx-auto mb-10">
@@ -23,6 +24,7 @@ const SearchBar = memo(function SearchBar({ value, onChange }) {
           className="w-full pl-11 pr-10 py-3 bg-white border border-zinc-200 rounded-full text-zinc-800 placeholder-zinc-400 text-sm shadow-xs focus:outline-none focus:border-zinc-900 focus:ring-1 focus:ring-zinc-900 transition-all duration-200"
         />
 
+        {/* small clear button when there is text */}
         {value && (
           <button
             type="button"

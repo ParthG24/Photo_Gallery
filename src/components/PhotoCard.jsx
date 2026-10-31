@@ -1,10 +1,11 @@
 import React, { memo } from 'react';
 
+// memo stops cards from re-rendering if their props haven't changed
 const PhotoCard = memo(function PhotoCard({ photo, isFavourite, onToggleFavourite }) {
   return (
     <div className="group bg-white border border-zinc-200/80 rounded-2xl overflow-hidden shadow-xs hover:shadow-md hover:border-zinc-300 transition-all duration-300 flex flex-col">
       <div className="relative aspect-4/3 w-full bg-zinc-100 overflow-hidden">
-        {/* Photo with lazy loading */}
+        {/* photo thumbnail with lazy loading */}
         <img
           src={`https://picsum.photos/id/${photo.id}/600/400`}
           alt={`Photo by ${photo.author}`}
@@ -12,7 +13,7 @@ const PhotoCard = memo(function PhotoCard({ photo, isFavourite, onToggleFavourit
           className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 ease-out"
         />
 
-        {/* Heart icon button to toggle favourite */}
+        {/* heart button to toggle favourite status */}
         <button
           type="button"
           onClick={() => onToggleFavourite(photo.id)}
@@ -36,7 +37,6 @@ const PhotoCard = memo(function PhotoCard({ photo, isFavourite, onToggleFavourit
         </button>
       </div>
 
-      {/* Card details */}
       <div className="p-4 flex items-center justify-between border-t border-zinc-100">
         <div className="min-w-0 pr-2">
           <p className="text-[10px] uppercase tracking-wider text-zinc-400 font-medium">
