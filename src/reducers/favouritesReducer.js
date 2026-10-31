@@ -1,5 +1,6 @@
-const STORAGE_KEY = 'gallery_favourites';
+export const STORAGE_KEY = 'gallery_favourites';
 
+// Load saved favourites from localStorage once on initial render
 export function getInitialFavourites() {
   try {
     const saved = localStorage.getItem(STORAGE_KEY);
@@ -9,19 +10,16 @@ export function getInitialFavourites() {
   }
 }
 
-// A reducer should only compute and return new state — nothing else.
-// Saving to localStorage is a side effect, so it belongs in a useEffect in Gallery.jsx.
+// Pure reducer: adds or removes a photo ID from the list
 export function favouritesReducer(state, action) {
   switch (action.type) {
     case 'TOGGLE_FAVOURITE': {
       const id = action.payload;
       return state.includes(id)
-        ? state.filter((fav) => fav !== id)
+        ? state.filter((favId) => favId !== id)
         : [...state, id];
     }
     default:
       return state;
   }
 }
-
-export { STORAGE_KEY };
