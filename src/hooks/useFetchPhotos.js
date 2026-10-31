@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 
 const API_URL = 'https://picsum.photos/v2/list?limit=30';
 
@@ -7,40 +7,32 @@ export function useFetchPhotos() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  useEffect(() => {
+  const fetchPhotos = useCallback(async () => {
     let isMounted = true;
 
-    async function fetchPhotos() {
-      try {
-        setLoading(true);
-        setError(null);
+    setLoading(true);
+    setError(null);
 
-        const res = await fetch(API_URL);
-        if (!res.ok) {
-          throw new Error('Failed to fetch photos from Picsum API');
-        }
-
-        const data = await res.json();
-        if (isMounted) {
-          setPhotos(data);
-        }
-      } catch (err) {
-        if (isMounted) {
-          setError(err.message || 'Something went wrong');
-        }
-      } finally {
-        if (isMounted) {
-          setLoading(false);
-        }
-      }
+    try {
+      const res = await fetch(API_URL);
+      if (!res.ok) throw new Error('Failed to fetch photos. Please try again.');
+      const data = await res.json();
+      if (isMounted) setPhotos(data);
+    } catch (err) {
+      if (isMounted) setError(err.message);
+    } finally {
+      if (isMounted) setLoading(false);
     }
 
-    fetchPhotos();
-
-    return () => {
-      isMounted = false;
-    };
+    // This cleanup runs when the component using this hook unmounts mid-fetch
+    return () => { isMounted = false; };
   }, []);
 
-  return { photos, loading, error };
+  useEffect(() => {
+    fetchPhotos();
+  }, [fetchPhotos]);
+
+  // We expose refetch so the ErrorMessage retry button can call it
+  // instead of reloading the entire page with window.location.reload()
+  return { photos, loading, error, refetch: fetchPhotos };
 }

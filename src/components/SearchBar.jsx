@@ -1,6 +1,8 @@
-import React from 'react';
+import React, { memo } from 'react';
 
-export default function SearchBar({ value, onChange }) {
+// memo tells React: only re-render SearchBar if its props (value or onChange) actually changed.
+// Without memo, SearchBar re-renders every time Gallery re-renders, even when unrelated.
+const SearchBar = memo(function SearchBar({ value, onChange }) {
   return (
     <div className="w-full max-w-lg mx-auto mb-10">
       <div className="relative">
@@ -37,4 +39,6 @@ export default function SearchBar({ value, onChange }) {
       </div>
     </div>
   );
-}
+});
+
+export default SearchBar;

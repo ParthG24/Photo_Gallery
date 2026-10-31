@@ -17,9 +17,7 @@ export default function App() {
               </h1>
             </div>
             <div className="text-right">
-              <span className="text-xs font-mono text-neutral-500">
-                30 Works
-              </span>
+              
             </div>
           </div>
         </div>

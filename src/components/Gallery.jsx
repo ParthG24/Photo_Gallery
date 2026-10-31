@@ -1,18 +1,14 @@
-import React, { useState, useReducer, useCallback, useMemo } from 'react';
+import React, { useState, useReducer, useCallback, useMemo, useEffect } from 'react';
 import { useFetchPhotos } from '../hooks/useFetchPhotos';
-import {
-  favouritesReducer,
-  getInitialFavourites,
-} from '../reducers/favouritesReducer';
+import { favouritesReducer, getInitialFavourites, STORAGE_KEY } from '../reducers/favouritesReducer';
 import SearchBar from './SearchBar';
 import PhotoCard from './PhotoCard';
 import LoadingSpinner from './LoadingSpinner';
 import ErrorMessage from './ErrorMessage';
 
 export default function Gallery() {
-  const { photos, loading, error } = useFetchPhotos();
+  const { photos, loading, error, refetch } = useFetchPhotos();
 
-  // Favourites state managed by useReducer, loaded from localStorage
   const [favourites, dispatch] = useReducer(
     favouritesReducer,
     [],
@@ -21,24 +17,32 @@ export default function Gallery() {
 
   const [searchQuery, setSearchQuery] = useState('');
 
-  // useCallback memoizes the input handler function across re-renders
+  // Side effect: keep localStorage in sync whenever favourites changes.
+  // This is the right place for it — not inside the reducer.
+  useEffect(() => {
+    try {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(favourites));
+    } catch {
+      // localStorage might be blocked in some browsers (e.g. private mode)
+    }
+  }, [favourites]);
+
+  // useCallback keeps the function reference stable across re-renders.
+  // SearchBar is wrapped in React.memo, so it only re-renders when its props change.
+  // Without useCallback here, a new function reference would be passed on every render,
+  // making React.memo on SearchBar useless.
   const handleSearchChange = useCallback((e) => {
     setSearchQuery(e.target.value);
   }, []);
 
-  // Dispatch toggle favourite action
   const handleToggleFavourite = useCallback((photoId) => {
     dispatch({ type: 'TOGGLE_FAVOURITE', payload: photoId });
   }, []);
 
-  // useMemo computes filtered list without re-running on unrelated renders
   const filteredPhotos = useMemo(() => {
     const query = searchQuery.trim().toLowerCase();
     if (!query) return photos;
-
-    return photos.filter((photo) =>
-      photo.author.toLowerCase().includes(query)
-    );
+    return photos.filter((photo) => photo.author.toLowerCase().includes(query));
   }, [photos, searchQuery]);
 
   return (
@@ -48,21 +52,15 @@ export default function Gallery() {
       {loading && <LoadingSpinner />}
 
       {!loading && error && (
-        <ErrorMessage
-          message={error}
-          onRetry={() => window.location.reload()}
-        />
+        <ErrorMessage message={error} onRetry={refetch} />
       )}
 
       {!loading && !error && (
         <>
-          {/* Subtle status bar */}
           <div className="flex items-center justify-between mb-8 pb-3 border-b border-neutral-800/80 text-xs text-neutral-400">
             <p>
               Showing{' '}
-              <span className="text-white font-medium">
-                {filteredPhotos.length}
-              </span>{' '}
+              <span className="text-white font-medium">{filteredPhotos.length}</span>{' '}
               of{' '}
               <span className="text-white font-medium">{photos.length}</span>{' '}
               photos
@@ -70,9 +68,7 @@ export default function Gallery() {
             <p className="flex items-center gap-2">
               <span className="w-1.5 h-1.5 rounded-full bg-red-500 inline-block" />
               <span>
-                <span className="text-white font-medium">
-                  {favourites.length}
-                </span>{' '}
+                <span className="text-white font-medium">{favourites.length}</span>{' '}
                 favourites
               </span>
             </p>
@@ -88,7 +84,6 @@ export default function Gallery() {
               </p>
             </div>
           ) : (
-            /* Responsive Grid: Desktop 4, Tablet 2, Mobile 1 */
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
               {filteredPhotos.map((photo) => (
                 <PhotoCard

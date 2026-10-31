@@ -1,6 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, memo } from 'react';
 
-export default function PhotoCard({ photo, isFavourite, onToggleFavourite }) {
+// memo prevents PhotoCard from re-rendering when unrelated state in Gallery changes.
+// For example, typing in the search bar should not re-render cards that didn't change.
+const PhotoCard = memo(function PhotoCard({ photo, isFavourite, onToggleFavourite }) {
   const [imgSrc, setImgSrc] = useState(
     `https://picsum.photos/id/${photo.id}/600/400`
   );
@@ -58,4 +60,6 @@ export default function PhotoCard({ photo, isFavourite, onToggleFavourite }) {
       </div>
     </div>
   );
-}
+});
+
+export default PhotoCard;
