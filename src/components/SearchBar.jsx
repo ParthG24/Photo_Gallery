@@ -1,6 +1,6 @@
 import React, { memo } from 'react';
 
-// memo ensures typing elsewhere doesn't cause this to re-render
+// with this function we make sure the component doesn't re-render unless its props change
 const SearchBar = memo(function SearchBar({ value, onChange }) {
   return (
     <div className="w-full max-w-lg mx-auto mb-10">

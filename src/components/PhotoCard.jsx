@@ -1,6 +1,6 @@
 import React, { memo } from 'react';
 
-// memo stops cards from re-rendering if their props haven't changed
+// with this function we make sure the component doesn't re-render unless its props change
 const PhotoCard = memo(function PhotoCard({ photo, isFavourite, onToggleFavourite }) {
   return (
     <div className="group bg-white border border-zinc-200/80 rounded-2xl overflow-hidden shadow-xs hover:shadow-md hover:border-zinc-300 transition-all duration-300 flex flex-col">

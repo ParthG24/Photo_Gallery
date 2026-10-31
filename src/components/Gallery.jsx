@@ -27,7 +27,7 @@ export default function Gallery() {
     }
   }, [favourites]);
 
-  // stable function reference so SearchBar doesn't re-render needlessly
+  // with this useCallback function we make sure the child component doesn't re-render needlessly
   const handleSearchChange = useCallback((e) => {
     setSearchQuery(e.target.value);
   }, []);
@@ -37,7 +37,7 @@ export default function Gallery() {
     dispatch({ type: 'TOGGLE_FAVOURITE', payload: photoId });
   }, []);
 
-  // only re-filter when photos or the search query actually changes
+  // with this useMemo function we make sure we don't re-run the filter on every re-render
   const filteredPhotos = useMemo(() => {
     const query = searchQuery.trim().toLowerCase();
     if (!query) return photos;
